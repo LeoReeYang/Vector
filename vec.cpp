@@ -6,59 +6,81 @@ template <typename T>
 class Vec
 {
 private:
-    T *start;
-    size_t cap, size;
+    T *_start;
+    size_t _cap, _size;
 
 public:
-    Vec() : start(NULL), cap(0), size(0) {}
-    Vec(T, int n) : cap(n), size(0) // T类型的vec 长度为n
+    Vec() : _start(nullptr), _cap(0), _size(0) {}
+    Vec(size_t n) : _cap(n), _size(0) // T类型的vec 长度为n
     {
-        start = new T[n];
+        _start = new T[n];
     }
-    int size() { return size; }
-    int cap() { return cap; }
+    int size() { return _size; }
+    int cap() { return _cap; }
 
     void change_cap(int i)
     {
-        cap = i;
+        _cap = i;
     }
 
-    void push_back(T a)
+    void push_back(const T &a)
     {
         if (cap() - size())
         {
-            start[size++] = a;
+            _start[_size++] = a;
         }
         else
         {
-            T *original = start;        // origin memo
-            T *temp = new T[cap() * 2]; // new array
+            T *original = _start;        // origin memo
+            T *temp = new T[cap() << 1]; // new array
 
             int i;
             for (i = 0; i < cap(); i++)
-                temp[i] = start[i]; // copy
+                temp[i] = _start[i]; // copy
 
-            temp[i] = a;  // push
-            size++;       // useage ++
-            start = temp; // new address
+            temp[i] = a;   // push
+            _size++;       // useage ++
+            _start = temp; // new address
 
-            change_cap(cap() * 2); // change cap
-            delete original[];
+            change_cap(cap() * 2); // change _cap
+            delete[] original;
         }
     }
     void pop_back()
     {
-        if (size)
+        if (_size)
         {
-            size--;
+            _size--;
         }
-    };
+    }
 
     T &operator[](size_t pos)
     {
-        if (pos >= 0 and pos < cap())
+        if (pos >= 0 and pos < size())
         {
-            return data[pos];
+            return _start[pos];
+        }
+        else
+        {
+            throw "out of bound!";
         }
     }
 };
+
+int main()
+{
+    Vec<int> t(5);
+    for (int i = 0; i < 5; i++)
+    {
+        t.push_back(i + 1);
+        cout << t[i] << endl;
+    }
+
+    t.pop_back();
+    t.pop_back();
+
+    for (int i = 0; i < t.size(); i++)
+    {
+        cout << t[i] << endl;
+    }
+}
