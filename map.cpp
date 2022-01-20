@@ -2,32 +2,35 @@
 #include <list>
 using namespace std;
 template <typename K, typename V>
-class Node
-{
-public:
-    K _key;
-    V _value;
-    Node *next;
-
-    Node() {}
-    Node(K key, V value) : _key(key), _value(value), next(nullptr) {}
-    ~Node() {}
-
-    Node &operator=(const Node &node)
-    {
-        _key = node._key;
-        _value = node._value;
-        next = node.next;
-        return *this;
-    }
-};
-
-template <typename K, typename V>
 class Map
 {
 private:
     size_t _size;
     V nullvalue;
+
+private:
+    template <typename Key, typename Value>
+    class Node
+    {
+    public:
+        Key _key;
+        Value _value;
+        Node *next;
+
+        Node() {}
+        Node(Key key, Value value) : _key(key), _value(value), next(nullptr) {}
+        ~Node() {}
+
+        Node &operator=(const Node &node)
+        {
+            _key = node._key;
+            _value = node._value;
+            next = node.next;
+            return *this;
+        }
+    };
+
+private:
     Node<K, V> **table;
 
 public:
